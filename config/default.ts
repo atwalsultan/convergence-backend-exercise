@@ -1,5 +1,6 @@
 export default {
   port: 1337,
   host: 'localhost',
-  databaseUri: "mongodb://localhost:27017/convergence-backend"
+  databaseUri: "mongodb://localhost:27017/convergence-backend",
+  saltWorkFactor: 10
 }
