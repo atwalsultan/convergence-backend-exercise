@@ -8,12 +8,14 @@ import { sign, decode } from "../utils/jwtUtils";
 import Session, { SessionDocument } from "../models/sessionModel";
 import { findUser } from "./userService";
 
+// Create session
 export async function createSession(userId: string, userAgent: string) {
   const session = await Session.create({ user: userId, userAgent });
 
   return session.toJSON();
 }
 
+// Create access token
 export function createAccessToken({
   user,
   session,
@@ -22,14 +24,12 @@ export function createAccessToken({
   session: FlattenMaps<LeanDocument<any>>
 }) {
   // Build and return the new access token
-  const accessToken = sign(
-    { ...user, session: session._id },
-    { expiresIn: config.get("accessTokenTtl") } // 15 minutes
-  );
+  const accessToken = sign({ ...user, session: session._id }, { expiresIn: config.get("accessTokenTtl") });
 
   return accessToken;
 }
 
+// Re-issue access token
 export async function reIssueAccessToken({
   refreshToken,
 }: {
@@ -55,6 +55,7 @@ export async function reIssueAccessToken({
   return accessToken;
 }
 
+// Update session
 export async function updateSession(
   query: FilterQuery<SessionDocument>,
   update: UpdateQuery<SessionDocument>
@@ -62,6 +63,7 @@ export async function updateSession(
   return Session.updateOne(query, update);
 }
 
+// Find user sessions
 export async function findSessions(query: FilterQuery<SessionDocument>) {
   return Session.find(query).lean();
 }

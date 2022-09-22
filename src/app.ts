@@ -12,6 +12,7 @@ const host = config.get("host") as string;
 
 const app = express();
 
+// Middleware
 app.use(deserializeUser);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

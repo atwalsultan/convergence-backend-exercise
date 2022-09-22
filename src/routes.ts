@@ -5,7 +5,8 @@ import { Express } from 'express';
 import { createUserHandler } from './controllers/userController';
 import { createUserSessionHandler, getUserSessionsHandler, invalidateUserSessionHandler } from './controllers/sessionController';
 import { validateRequest, requiresUser } from './middleware';
-import { createUserSchema, createUserSessionSchema } from './schemas/userSchemas';
+import { createUserSchema } from './schemas/userSchema';
+import { createSessionSchema } from './schemas/sessionSchema';
 import { createTaskHandler, deleteTaskHandler, getFilteredTasksHandler, getTaskHandler, getTasksHandler, updateTaskHandler } from './controllers/taskController';
 import { createTaskSchema, updateTaskSchema, deleteTaskSchema } from './schemas/taskSchema';
 
@@ -14,7 +15,7 @@ export default function(app: Express) {
   app.post("/api/users", validateRequest(createUserSchema), createUserHandler);
 
   // Login
-  app.post("/api/sessions", validateRequest(createUserSessionSchema), createUserSessionHandler);
+  app.post("/api/sessions", validateRequest(createSessionSchema), createUserSessionHandler);
 
   // Get sessions
   app.get("/api/sessions", requiresUser, getUserSessionsHandler);
