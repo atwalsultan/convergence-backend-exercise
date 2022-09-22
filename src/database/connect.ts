@@ -1,7 +1,7 @@
-// Node modules
+// Third-party packages
 import mongoose, { ConnectOptions } from "mongoose";
 
-// Local modules
+// Local packages
 import config from "config";
 
 function connect() {
