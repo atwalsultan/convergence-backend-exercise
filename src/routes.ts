@@ -3,8 +3,9 @@ import { Express, Request, Response } from 'express';
 
 // Local packages
 import { createUserHandler } from './controllers/userController';
-import validateRequest from './middleware/validateRequest';
-import { createUserSchema } from './schemas/userSchemas';
+import { createUserSessionHandler, getUserSessionsHandler, invalidateUserSessionHandler } from './controllers/sessionController';
+import { validateRequest, requiresUser } from './middleware';
+import { createUserSchema, createUserSessionSchema } from './schemas/userSchemas';
 
 export default function(app: Express) {
   app.get("/test", (req: Request, res: Response) => res.sendStatus(200));
@@ -14,8 +15,11 @@ export default function(app: Express) {
   app.post("/api/users", validateRequest(createUserSchema), createUserHandler);
 
   // Login
+  app.post("/api/sessions", validateRequest(createUserSessionSchema), createUserSessionHandler);
 
-  // Get the user's sessions
+  // Get sessions
+  app.get("/api/sessions", requiresUser, getUserSessionsHandler)
 
   // Logout
+  app.delete("/api/sessions", requiresUser, invalidateUserSessionHandler)
 }
