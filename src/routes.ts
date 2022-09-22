@@ -1,16 +1,15 @@
 // Third-party packages
-import { Express, Request, Response } from 'express';
+import { Express } from 'express';
 
 // Local packages
 import { createUserHandler } from './controllers/userController';
 import { createUserSessionHandler, getUserSessionsHandler, invalidateUserSessionHandler } from './controllers/sessionController';
 import { validateRequest, requiresUser } from './middleware';
 import { createUserSchema, createUserSessionSchema } from './schemas/userSchemas';
+import { createTaskHandler, deleteTaskHandler, getFilteredTasksHandler, getTaskHandler, getTasksHandler, updateTaskHandler } from './controllers/taskController';
+import { createTaskSchema, updateTaskSchema, deleteTaskSchema } from './schemas/taskSchema';
 
-export default function(app: Express) {
-  app.get("/test", (req: Request, res: Response) => res.sendStatus(200));
-  
-
+export default function(app: Express) {  
   // Signup
   app.post("/api/users", validateRequest(createUserSchema), createUserHandler);
 
@@ -18,8 +17,26 @@ export default function(app: Express) {
   app.post("/api/sessions", validateRequest(createUserSessionSchema), createUserSessionHandler);
 
   // Get sessions
-  app.get("/api/sessions", requiresUser, getUserSessionsHandler)
+  app.get("/api/sessions", requiresUser, getUserSessionsHandler);
 
   // Logout
-  app.delete("/api/sessions", requiresUser, invalidateUserSessionHandler)
+  app.delete("/api/sessions", requiresUser, invalidateUserSessionHandler);
+
+  // Create a task
+  app.post("/api/tasks", [requiresUser, validateRequest(createTaskSchema)], createTaskHandler);
+
+  // Update a task
+  app.put("/api/tasks/:taskId", [requiresUser, validateRequest(updateTaskSchema)], updateTaskHandler);
+
+  // Get a single task
+  app.get("/api/tasks/:taskId", getTaskHandler);
+
+  // Get all tasks
+  app.get("/api/tasks", getTasksHandler);
+
+  // Get filtered tasks
+  app.get("/api/tasks/filter/:filter", getFilteredTasksHandler)
+
+  // Delete a single task
+  app.delete("/api/tasks/:taskId", [requiresUser, validateRequest(deleteTaskSchema)], deleteTaskHandler);
 }
