@@ -30,10 +30,10 @@ export default function(app: Express) {
   app.put("/api/tasks/:taskId", [requiresUser, validateRequest(updateTaskSchema)], updateTaskHandler);
 
   // Get a single task
-  app.get("/api/tasks/:taskId", getTaskHandler);
+  app.get("/api/tasks/:taskId", requiresUser, getTaskHandler);
 
   // Get all tasks
-  app.get("/api/tasks", getTasksHandler);
+  app.get("/api/tasks", requiresUser, getTasksHandler);
 
   // Get filtered tasks
   app.get("/api/tasks/filter/:filter", getFilteredTasksHandler)
