@@ -11,11 +11,7 @@ const deserializeUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const accessToken = get(req, "headers.authorization", "").replace(
-    /^Bearer\s/,
-    ""
-  );
-
+  const accessToken = get(req, "headers.authorization", "").replace(/^Bearer\s/,"");
   const refreshToken = get(req, "headers.x-refresh");
 
   if (!accessToken) return next();
@@ -35,7 +31,6 @@ const deserializeUser = async (
     if (newAccessToken) {
       // Add the new access token to the response header
       res.setHeader("authorization", newAccessToken);
-
       const { decoded } = decode(newAccessToken);
 
       // @ts-ignore
