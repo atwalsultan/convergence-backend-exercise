@@ -32,3 +32,4 @@ For more help on how to use the app, you can refer to the following videos (in o
 ## Notes
 
 - JWT authentication might be a bit too much for this exercise but I had recently worked on a very similar authentication system and thought it would be quicker to implement. I made this decision because I was told that it would be greatly appreciated if I could finish the exercise before the end of the week.
+- I chose the back end exercise because I have been working quite a lot on the front end lately. I wanted to challenge myself and see if I could finish the exercise before the end of this week.
